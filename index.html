@@ -1,0 +1,698 @@
+<!doctype html>
+<html lang="id">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perencanaan Pembelajaran Mendalam</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow-x: hidden;
+      width: 100%;
+      height: 100%;
+    }
+
+    html {
+      width: 100%;
+      height: 100%;
+    }
+
+    .app-container {
+      width: 100%;
+      min-height: 100%;
+      position: relative;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 75%, #667eea 100%);
+      background-size: 400% 400%;
+      animation: gradientFlow 15s ease infinite;
+    }
+
+    @keyframes gradientFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .floating-shapes {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .shape {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.4;
+      animation: float 20s infinite ease-in-out;
+    }
+
+    .shape1 {
+      width: 300px;
+      height: 300px;
+      background: #ff6b9d;
+      top: 10%;
+      left: 10%;
+      animation-delay: 0s;
+    }
+
+    .shape2 {
+      width: 250px;
+      height: 250px;
+      background: #c44569;
+      top: 60%;
+      right: 15%;
+      animation-delay: 3s;
+    }
+
+    .shape3 {
+      width: 200px;
+      height: 200px;
+      background: #a29bfe;
+      bottom: 20%;
+      left: 30%;
+      animation-delay: 6s;
+    }
+
+    .shape4 {
+      width: 280px;
+      height: 280px;
+      background: #6c5ce7;
+      top: 30%;
+      right: 25%;
+      animation-delay: 9s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      25% { transform: translate(50px, 50px) rotate(90deg); }
+      50% { transform: translate(-30px, 80px) rotate(180deg); }
+      75% { transform: translate(70px, -40px) rotate(270deg); }
+    }
+
+    .main-content {
+      position: relative;
+      z-index: 2;
+      padding: 60px 40px;
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .welcome-screen {
+      text-align: center;
+      max-width: 900px;
+      width: 100%;
+    }
+
+    .welcome-screen.hidden {
+      display: none;
+    }
+
+    .icon-decoration {
+      font-size: 80px;
+      margin-bottom: 30px;
+      animation: bounce 2s infinite;
+      display: inline-block;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+
+    .main-title {
+      font-size: 72px;
+      font-weight: 800;
+      color: white;
+      text-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      margin-bottom: 20px;
+      animation: fadeInScale 1s ease-out;
+      line-height: 1.2;
+    }
+
+    @keyframes fadeInScale {
+      from {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .subtitle {
+      font-size: 28px;
+      color: rgba(255, 255, 255, 0.95);
+      margin-bottom: 50px;
+      animation: fadeInUp 1s ease-out 0.3s both;
+      font-weight: 300;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .credits-box {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(20px);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 30px;
+      padding: 40px 60px;
+      margin-bottom: 50px;
+      animation: fadeInUp 1s ease-out 0.6s both;
+      box-shadow: 0 15px 50px rgba(0,0,0,0.2);
+    }
+
+    .credit-item {
+      margin-bottom: 25px;
+      color: white;
+    }
+
+    .credit-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .credit-label {
+      font-size: 16px;
+      opacity: 0.9;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .credit-name {
+      font-size: 24px;
+      font-weight: 700;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+
+    .start-button {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      padding: 22px 60px;
+      font-size: 24px;
+      font-weight: 700;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+      animation: fadeInUp 1s ease-out 0.9s both, pulse 2s infinite;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .start-button:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      transition: left 0.5s;
+    }
+
+    .start-button:hover:before {
+      left: 100%;
+    }
+
+    .start-button:hover {
+      transform: translateY(-5px) scale(1.05);
+      box-shadow: 0 20px 50px rgba(102, 126, 234, 0.6);
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+    }
+
+    .content-screen {
+      display: none;
+      width: 100%;
+      max-width: 1200px;
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    .content-screen.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .nav-bar {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .nav-button {
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      color: white;
+      padding: 15px 30px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nav-button:before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: translate(-50%, -50%);
+      transition: width 0.5s, height 0.5s;
+    }
+
+    .nav-button:hover:before {
+      width: 300px;
+      height: 300px;
+    }
+
+    .nav-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      border-color: rgba(255, 255, 255, 0.5);
+    }
+
+    .nav-button.active {
+      background: rgba(255, 255, 255, 0.35);
+      border-color: rgba(255, 255, 255, 0.6);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    }
+
+    .content-card {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(20px);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 35px;
+      padding: 50px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+      animation: slideUp 0.6s ease-out;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .page-title {
+      font-size: 48px;
+      font-weight: 800;
+      color: white;
+      text-align: center;
+      margin-bottom: 50px;
+      text-shadow: 0 5px 20px rgba(0,0,0,0.3);
+      position: relative;
+      display: inline-block;
+      width: 100%;
+    }
+
+    .page-title:after {
+      content: '';
+      position: absolute;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 150px;
+      height: 5px;
+      background: linear-gradient(90deg, transparent, white, transparent);
+      border-radius: 5px;
+      animation: shimmer 2s infinite;
+    }
+
+    @keyframes shimmer {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+
+    .item-list {
+      list-style: none;
+    }
+
+    .list-item {
+      background: rgba(255, 255, 255, 0.1);
+      border-left: 5px solid rgba(255, 255, 255, 0.6);
+      margin-bottom: 25px;
+      padding: 25px 30px;
+      border-radius: 20px;
+      color: white;
+      font-size: 22px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      animation: slideInLeft 0.5s ease-out backwards;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .list-item:nth-child(1) { animation-delay: 0.1s; }
+    .list-item:nth-child(2) { animation-delay: 0.2s; }
+    .list-item:nth-child(3) { animation-delay: 0.3s; }
+    .list-item:nth-child(4) { animation-delay: 0.4s; }
+    .list-item:nth-child(5) { animation-delay: 0.5s; }
+    .list-item:nth-child(6) { animation-delay: 0.6s; }
+    .list-item:nth-child(7) { animation-delay: 0.7s; }
+    .list-item:nth-child(8) { animation-delay: 0.8s; }
+
+    @keyframes slideInLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .list-item:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateX(10px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    .item-icon {
+      font-size: 32px;
+      flex-shrink: 0;
+    }
+
+    .back-button {
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(255, 255, 255, 0.4);
+      color: white;
+      padding: 15px 40px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: 600;
+      margin-top: 40px;
+      display: inline-block;
+      transition: all 0.3s ease;
+    }
+
+    .back-button:hover {
+      background: rgba(255, 255, 255, 0.35);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    @media (max-width: 768px) {
+      .main-title {
+        font-size: 42px;
+      }
+
+      .subtitle {
+        font-size: 20px;
+      }
+
+      .credits-box {
+        padding: 30px 40px;
+      }
+
+      .credit-name {
+        font-size: 20px;
+      }
+
+      .page-title {
+        font-size: 36px;
+      }
+
+      .list-item {
+        font-size: 18px;
+        padding: 20px;
+      }
+
+      .content-card {
+        padding: 30px;
+      }
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+ </head>
+ <body>
+  <div class="app-container">
+   <div class="floating-shapes">
+    <div class="shape shape1"></div>
+    <div class="shape shape2"></div>
+    <div class="shape shape3"></div>
+    <div class="shape shape4"></div>
+   </div>
+   <div class="main-content">
+    <div class="welcome-screen" id="welcomeScreen">
+     <div class="icon-decoration">
+      📚
+     </div>
+     <h1 class="main-title" id="mainTitle">PERENCANAAN PEMBELAJARAN MENDALAM</h1>
+     <p class="subtitle" id="subtitle">Pada Pembelajaran Dasar TKJ</p>
+     <div class="credits-box">
+      <div class="credit-item">
+       <div class="credit-label">
+        ✨ Dibuat oleh
+       </div>
+       <div class="credit-name" id="authorName">
+        Ramadan Julian Putra
+       </div>
+      </div>
+      <div class="credit-item">
+       <div class="credit-label">
+        👨‍🏫 Guru Pembimbing
+       </div>
+       <div class="credit-name" id="supervisorName">
+        Dr. Mutia Liana, S.Pd, M.Pd
+       </div>
+      </div>
+     </div><button class="start-button" id="startButton"> <span id="buttonText">🚀 Masuk ke Materi</span> </button>
+    </div>
+    <div class="content-screen" id="contentScreen">
+     <div class="nav-bar" id="navBar"><button class="nav-button" data-page="1">Halaman 1</button> <button class="nav-button" data-page="2">Halaman 2</button> <button class="nav-button" data-page="3">Halaman 3</button> <button class="nav-button" data-page="4">Halaman 4</button>
+     </div>
+     <div id="pageContent"></div><button class="back-button" id="backButton">← Kembali ke Beranda</button>
+    </div>
+   </div>
+  </div>
+  <script>
+    const defaultConfig = {
+      main_title: "PERENCANAAN PEMBELAJARAN MENDALAM",
+      subtitle: "Pada Pembelajaran Dasar TKJ",
+      author_name: "Ramadan Julian Putra",
+      supervisor_name: "Dr. Mutia Liana, S.Pd, M.Pd",
+      button_text: "🚀 Masuk ke Materi",
+      background_color: "#667eea",
+      surface_color: "#ffffff",
+      text_color: "#ffffff",
+      primary_action_color: "#764ba2",
+      secondary_action_color: "#f093fb"
+    };
+
+    const pages = {
+      1: {
+        title: "Delapan Dimensi",
+        items: [
+          { icon: "🕌", text: "Keimanan dan Ketakwaan Terhadap Tuhan YME" },
+          { icon: "🏛️", text: "Kewargaan" },
+          { icon: "🧠", text: "Penalaran Kritis" },
+          { icon: "🎨", text: "Kreativitas" },
+          { icon: "🤝", text: "Kolaborasi" },
+          { icon: "💪", text: "Kemandirian" },
+          { icon: "❤️", text: "Kesehatan" },
+          { icon: "💬", text: "Komunikasi" }
+        ]
+      },
+      2: {
+        title: "Tiga Prinsip Landasan Dimensi",
+        items: [
+          { icon: "✨", text: "Bermakna" },
+          { icon: "🌟", text: "Berkesadaran" },
+          { icon: "😊", text: "Menggembirakan" }
+        ]
+      },
+      3: {
+        title: "Pelaksanaan",
+        items: [
+          { icon: "🧩", text: "Olah Pikir" },
+          { icon: "💖", text: "Olah Hati" },
+          { icon: "🎭", text: "Olah Rasa" },
+          { icon: "⚽", text: "Olah Raga" }
+        ]
+      },
+      4: {
+        title: "Pengalaman Mendalam Diciptakan Melalui Proses",
+        items: [
+          { icon: "📖", text: "Memahami" },
+          { icon: "⚙️", text: "Mengaplikasi" },
+          { icon: "🔄", text: "Merefleksi" }
+        ]
+      }
+    };
+
+    let currentPage = 1;
+
+    async function onConfigChange(config) {
+      const mainTitleEl = document.getElementById('mainTitle');
+      const subtitleEl = document.getElementById('subtitle');
+      const authorNameEl = document.getElementById('authorName');
+      const supervisorNameEl = document.getElementById('supervisorName');
+      const buttonTextEl = document.getElementById('buttonText');
+
+      if (mainTitleEl) mainTitleEl.textContent = config.main_title || defaultConfig.main_title;
+      if (subtitleEl) subtitleEl.textContent = config.subtitle || defaultConfig.subtitle;
+      if (authorNameEl) authorNameEl.textContent = config.author_name || defaultConfig.author_name;
+      if (supervisorNameEl) supervisorNameEl.textContent = config.supervisor_name || defaultConfig.supervisor_name;
+      if (buttonTextEl) buttonTextEl.textContent = config.button_text || defaultConfig.button_text;
+
+      const appContainer = document.querySelector('.app-container');
+      if (appContainer && config.background_color) {
+        appContainer.style.background = `linear-gradient(135deg, ${config.background_color} 0%, ${config.primary_action_color || defaultConfig.primary_action_color} 25%, ${config.secondary_action_color || defaultConfig.secondary_action_color} 50%, #4facfe 75%, ${config.background_color} 100%)`;
+      }
+    }
+
+    function renderPage(pageNum) {
+      const page = pages[pageNum];
+      const contentDiv = document.getElementById('pageContent');
+      
+      const itemsHTML = page.items.map(item => `
+        <li class="list-item">
+          <span class="item-icon">${item.icon}</span>
+          <span>${item.text}</span>
+        </li>
+      `).join('');
+
+      contentDiv.innerHTML = `
+        <div class="content-card">
+          <h2 class="page-title">${page.title}</h2>
+          <ul class="item-list">
+            ${itemsHTML}
+          </ul>
+        </div>
+      `;
+
+      document.querySelectorAll('.nav-button').forEach(btn => {
+        btn.classList.remove('active');
+        if (parseInt(btn.dataset.page) === pageNum) {
+          btn.classList.add('active');
+        }
+      });
+    }
+
+    document.getElementById('startButton').addEventListener('click', () => {
+      document.getElementById('welcomeScreen').classList.add('hidden');
+      document.getElementById('contentScreen').classList.add('active');
+      renderPage(currentPage);
+    });
+
+    document.getElementById('backButton').addEventListener('click', () => {
+      document.getElementById('contentScreen').classList.remove('active');
+      document.getElementById('welcomeScreen').classList.remove('hidden');
+    });
+
+    document.getElementById('navBar').addEventListener('click', (e) => {
+      if (e.target.classList.contains('nav-button')) {
+        currentPage = parseInt(e.target.dataset.page);
+        renderPage(currentPage);
+      }
+    });
+
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig: defaultConfig,
+        onConfigChange: onConfigChange,
+        mapToCapabilities: (config) => ({
+          recolorables: [
+            {
+              get: () => config.background_color || defaultConfig.background_color,
+              set: (value) => {
+                config.background_color = value;
+                window.elementSdk.setConfig({ background_color: value });
+              }
+            },
+            {
+              get: () => config.surface_color || defaultConfig.surface_color,
+              set: (value) => {
+                config.surface_color = value;
+                window.elementSdk.setConfig({ surface_color: value });
+              }
+            },
+            {
+              get: () => config.text_color || defaultConfig.text_color,
+              set: (value) => {
+                config.text_color = value;
+                window.elementSdk.setConfig({ text_color: value });
+              }
+            },
+            {
+              get: () => config.primary_action_color || defaultConfig.primary_action_color,
+              set: (value) => {
+                config.primary_action_color = value;
+                window.elementSdk.setConfig({ primary_action_color: value });
+              }
+            },
+            {
+              get: () => config.secondary_action_color || defaultConfig.secondary_action_color,
+              set: (value) => {
+                config.secondary_action_color = value;
+                window.elementSdk.setConfig({ secondary_action_color: value });
+              }
+            }
+          ],
+          borderables: [],
+          fontEditable: undefined,
+          fontSizeable: undefined
+        }),
+        mapToEditPanelValues: (config) => new Map([
+          ["main_title", config.main_title || defaultConfig.main_title],
+          ["subtitle", config.subtitle || defaultConfig.subtitle],
+          ["author_name", config.author_name || defaultConfig.author_name],
+          ["supervisor_name", config.supervisor_name || defaultConfig.supervisor_name],
+          ["button_text", config.button_text || defaultConfig.button_text]
+        ])
+      });
+    }
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a6bc5e6462efd2e',t:'MTc2NDUyMDY4NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
